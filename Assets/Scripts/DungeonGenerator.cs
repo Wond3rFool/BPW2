@@ -48,6 +48,7 @@ public class DungeonGenerator : MonoBehaviour
         FillWalls();
     }
 
+
     private void FillWalls()
     {
         BoundsInt bounds = groundMap.cellBounds;
@@ -153,6 +154,8 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
+
+
     private void GenerateSquare(int x, int y, int radius)
     {
         for (int tileX = x - radius; tileX <= x + radius; tileX++)
@@ -162,6 +165,26 @@ public class DungeonGenerator : MonoBehaviour
                 Vector3Int tilePos = new Vector3Int(tileX, tileY, 0);
                 groundMap.SetTile(tilePos, groundTile);
             }
+        }
+    }
+
+    private void RemoveSquares() 
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            groundMap.ClearAllTiles();
+            pitMap.ClearAllTiles();
+            wallMap.ClearAllTiles();
+            int x = 0;
+            int y = 0;
+            int routeLength = 0;
+            GenerateSquare(x, y, 1);
+            Vector2Int previousPos = new Vector2Int(x, y);
+            y += 3;
+            GenerateSquare(x, y, 1);
+            NewRoute(x, y, routeLength, previousPos);
+
+            FillWalls();
         }
     }
 }
