@@ -1,14 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour
 {
     private float moveSpeed = 5f;
     public Transform movePoint;
-
     public LayerMask stopMovement;
 
+    private GridController grid;
+    private void Awake()
+    {
+        grid = FindObjectOfType<GridController>();
+        
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, movePoint.position) == 0f) 
+        if (Vector3.Distance(transform.position, movePoint.position) == 0f && GameManager.isMenuing == false) 
         {
             if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f) 
             {
@@ -40,5 +46,16 @@ public class PlayerController : MonoBehaviour
             }
 
         }
+        if (Input.GetKeyDown(KeyCode.E)) 
+        {
+            GameManager.isMenuing = true;
+            grid.HighlightAction(transform.gameObject);
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            GameManager.isMenuing = false;
+            grid.DeHighlightAction(transform.gameObject);
+        }
+
     }
 }

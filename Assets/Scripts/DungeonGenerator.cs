@@ -15,7 +15,11 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField]
     private Tile botWallTile;
     [SerializeField]
+    private Tile highLightTile;
+    [SerializeField]
     private Tilemap groundMap;
+    [SerializeField]
+    private Tilemap highlightMap;
     [SerializeField] 
     private Tilemap pitMap;
     [SerializeField]
@@ -31,9 +35,14 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField]
     private int maxRoutes = 20;
 
-
     private int routeCount = 0;
 
+    public static List<Vector3> walkAbleTiles;
+
+    public void Awake()
+    {
+        walkAbleTiles = new List<Vector3>();
+    }
     private void Start()
     {
         int x = 0;
@@ -41,10 +50,10 @@ public class DungeonGenerator : MonoBehaviour
         int routeLength = 0;
         GenerateSquare(x, y, 1);
         Vector2Int previousPos = new Vector2Int(x, y);
+        Instantiate(player, new Vector3(x, y, 0), Quaternion.identity);
         y += 3;
         GenerateSquare(x, y, 1);
         NewRoute(x, y, routeLength, previousPos);
-
         FillWalls();
     }
 
@@ -59,6 +68,7 @@ public class DungeonGenerator : MonoBehaviour
                 Vector3Int pos = new Vector3Int(xMap, yMap, 0);
                 Vector3Int posBelow = new Vector3Int(xMap, yMap - 1, 0);
                 Vector3Int posAbove = new Vector3Int(xMap, yMap + 1, 0);
+                
                 TileBase tile = groundMap.GetTile(pos);
                 TileBase tileBelow = groundMap.GetTile(posBelow);
                 TileBase tileAbove = groundMap.GetTile(posAbove);
@@ -154,8 +164,6 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
-
-
     private void GenerateSquare(int x, int y, int radius)
     {
         for (int tileX = x - radius; tileX <= x + radius; tileX++)
@@ -163,7 +171,10 @@ public class DungeonGenerator : MonoBehaviour
             for (int tileY = y - radius; tileY <= y + radius; tileY++)
             {
                 Vector3Int tilePos = new Vector3Int(tileX, tileY, 0);
-                groundMap.SetTile(tilePos, groundTile);
+                Vector3 worldPos = groundMap.CellToWorld(tilePos);
+                walkAbleTiles.Add(worldPos);
+                highlightMap.SetTile(tilePos, groundTile);
+                groundMap.SetTile(tilePos, groundTile);               
             }
         }
     }
@@ -173,8 +184,10 @@ public class DungeonGenerator : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             groundMap.ClearAllTiles();
+            highlightMap.ClearAllTiles();
             pitMap.ClearAllTiles();
             wallMap.ClearAllTiles();
+            walkAbleTiles.Clear();
             int x = 0;
             int y = 0;
             int routeLength = 0;
@@ -183,7 +196,6 @@ public class DungeonGenerator : MonoBehaviour
             y += 3;
             GenerateSquare(x, y, 1);
             NewRoute(x, y, routeLength, previousPos);
-
             FillWalls();
         }
     }
