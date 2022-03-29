@@ -181,22 +181,19 @@ public class DungeonGenerator : MonoBehaviour
 
     private void RemoveSquares() 
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            groundMap.ClearAllTiles();
-            highlightMap.ClearAllTiles();
-            pitMap.ClearAllTiles();
-            wallMap.ClearAllTiles();
-            walkAbleTiles.Clear();
-            int x = 0;
-            int y = 0;
-            int routeLength = 0;
-            GenerateSquare(x, y, 1);
-            Vector2Int previousPos = new Vector2Int(x, y);
-            y += 3;
-            GenerateSquare(x, y, 1);
-            NewRoute(x, y, routeLength, previousPos);
-            FillWalls();
-        }
+        groundMap.ClearAllTiles();
+        highlightMap.ClearAllTiles();
+        pitMap.ClearAllTiles();
+        wallMap.ClearAllTiles();
+        walkAbleTiles.Clear();
+        int x = 0;
+        int y = 0;
+        int routeLength = 0;
+        GenerateSquare(x, y, 1);
+        Vector2Int previousPos = new Vector2Int(x, y);
+        y += 3;
+        GenerateSquare(x, y, 1);
+        NewRoute(x, y, routeLength, previousPos);
+        FillWalls();
     }
 }

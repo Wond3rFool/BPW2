@@ -13,18 +13,6 @@ public class GridController : MonoBehaviour
     [SerializeField]
     private Tile groundTile;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // Mouse over -> highlight tile
-    }
     public void HighlightAction(GameObject playerPos)
     {
         interactiveMap.SetTile(new Vector3Int((int)playerPos.transform.position.x, (int)playerPos.transform.position.y-1, 0), hoverTile); 

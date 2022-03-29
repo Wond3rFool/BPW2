@@ -6,28 +6,42 @@ using Toolbox;
 
 public class Pathfinding : MonoBehaviour 
 {
-    private Vector3 startPos;
-    private Vector3 thisPos;
-    private Vector3 endPos;
-    [SerializeField]
+    private Vector3 yUp, yDown, xRight, xLeft;
+
     private Tilemap walkAbleMap;
-    private List<Vector3> wayPoints;
+    private WalkAbleMap groundMap;
+    private List<Vector3> availablePoints;
 
     private void Awake()
     {
-        wayPoints = new List<Vector3>();
+        availablePoints = new List<Vector3>();  
+        groundMap = FindObjectOfType<WalkAbleMap>();
+        walkAbleMap = groundMap.GetComponent<Tilemap>();
+        Debug.Log(walkAbleMap);
+    }
+    private void Start() 
+    {
+        print(groundMap);       
+        print(walkAbleMap);
     }
 
-    private void Update()
+    public void moveEnemy() 
     {
-       
-           
-        if (Input.GetKeyDown(KeyCode.P)) 
-        {
-            thisPos = transform.position;
-            startPos = walkAbleMap.WorldToCell(thisPos);
-            endPos = DungeonGenerator.walkAbleTiles[Random.Range(0,DungeonGenerator.walkAbleTiles.Count)];
-            AStar.FindPath(walkAbleMap, startPos, endPos);
-        }
+        yUp = new Vector3(transform.position.x, transform.position.y + 1, 0);
+        yDown = new Vector3(transform.position.x, transform.position.y - 1, 0);
+        xRight = new Vector3(transform.position.x + 1, transform.position.y, 0);
+        xLeft = new Vector3(transform.position.x - 1, transform.position.y, 0);
+
+        if (walkAbleMap.HasTile(Vector3Int.FloorToInt(yUp)))
+            availablePoints.Add(yUp);
+        if (walkAbleMap.HasTile(Vector3Int.FloorToInt(yDown)))
+            availablePoints.Add(yDown);
+        if (walkAbleMap.HasTile(Vector3Int.FloorToInt(xRight)))
+            availablePoints.Add(xRight);
+        if (walkAbleMap.HasTile(Vector3Int.FloorToInt(xLeft)))
+            availablePoints.Add(xLeft);
+
+        transform.position = availablePoints[Random.Range(0, availablePoints.Count)];
+        availablePoints.Clear();
     }
 }
