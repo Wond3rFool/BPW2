@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
         if (Vector3.Distance(transform.position, movePoint.position) == 0f && GameManager.isMenuing == false) 
         {
-            if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f) 
+            if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f && GameManager.isPlayerTurn) 
             {
                 if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f), .2f, stopMovement))
                 {
@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
                     GameManager.isPlayerTurn = false;
                 }    
             }
-            else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
+            else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f && GameManager.isPlayerTurn)
             {
                 if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f), .2f, stopMovement))
                 {

@@ -6,19 +6,14 @@ using UnityEngine.Tilemaps;
 public class Pathfinding : MonoBehaviour 
 {
     private Vector3 yUp, yDown, xRight, xLeft;
-
-    private Tilemap walkAbleMap;
-    private GroundMap groundMap;
     private List<Vector3> availablePoints = new List<Vector3>();
 
 
     void OnEnable() 
     {
-        groundMap = FindObjectOfType<GroundMap>();
-        walkAbleMap = groundMap.GetComponent<Tilemap>();
       
     }
-    public void moveEnemy() 
+    public void moveEnemy(Tilemap walkAbleMap) 
     {
 
         yUp = new Vector3(transform.position.x, transform.position.y + 1, 0);
