@@ -57,9 +57,9 @@ public class GameManager : MonoBehaviour
                 break;
             case BattleState.EnemyAction:
                 {
-                    foreach (GameObject obj in gameObjects) 
+                    for (int i = 0; i < gameObjects.Count; i++) 
                     {
-                        pathFind = obj.GetComponent<Pathfinding>();
+                        pathFind = gameObjects[i].GetComponent<Pathfinding>();
                         pathFind.moveEnemy();
                     }
                     state = BattleState.PlayerAction;
