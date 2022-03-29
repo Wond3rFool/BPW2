@@ -10,23 +10,18 @@ public class Pathfinding : MonoBehaviour
 
     private Tilemap walkAbleMap;
     private WalkAbleMap groundMap;
-    private List<Vector3> availablePoints;
+    private List<Vector3> availablePoints = new List<Vector3>();
 
     private void Awake()
     {
-        availablePoints = new List<Vector3>();  
-        groundMap = FindObjectOfType<WalkAbleMap>();
-        walkAbleMap = groundMap.GetComponent<Tilemap>();
-        Debug.Log(walkAbleMap);
+        CheckForReferences();
     }
-    private void Start() 
-    {
-        print(groundMap);       
-        print(walkAbleMap);
-    }
+
 
     public void moveEnemy() 
     {
+        CheckForReferences();
+
         yUp = new Vector3(transform.position.x, transform.position.y + 1, 0);
         yDown = new Vector3(transform.position.x, transform.position.y - 1, 0);
         xRight = new Vector3(transform.position.x + 1, transform.position.y, 0);
@@ -41,7 +36,24 @@ public class Pathfinding : MonoBehaviour
         if (walkAbleMap.HasTile(Vector3Int.FloorToInt(xLeft)))
             availablePoints.Add(xLeft);
 
-        transform.position = availablePoints[Random.Range(0, availablePoints.Count)];
+        print(availablePoints.Count);
+        int indexxxx = Random.Range(0, availablePoints.Count);
+        print(indexxxx);
+        transform.position = availablePoints[indexxxx];
         availablePoints.Clear();
     }
+
+    private void CheckForReferences()
+    {
+        if (groundMap == null)
+        {
+            groundMap = FindObjectOfType<WalkAbleMap>();
+        }
+
+        if(walkAbleMap == null)
+        {
+            walkAbleMap = groundMap.GetComponent<Tilemap>();
+        }
+    }
+
 }
