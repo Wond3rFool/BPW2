@@ -2,25 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Toolbox;
 
 public class Pathfinding : MonoBehaviour 
 {
     private Vector3 yUp, yDown, xRight, xLeft;
 
     private Tilemap walkAbleMap;
-    private WalkAbleMap groundMap;
+    private GroundMap groundMap;
     private List<Vector3> availablePoints = new List<Vector3>();
 
-    private void Awake()
+
+    void OnEnable() 
     {
-        CheckForReferences();
+        groundMap = FindObjectOfType<GroundMap>();
+        walkAbleMap = groundMap.GetComponent<Tilemap>();
+      
     }
-
-
     public void moveEnemy() 
     {
-        CheckForReferences();
 
         yUp = new Vector3(transform.position.x, transform.position.y + 1, 0);
         yDown = new Vector3(transform.position.x, transform.position.y - 1, 0);
@@ -36,24 +35,13 @@ public class Pathfinding : MonoBehaviour
         if (walkAbleMap.HasTile(Vector3Int.FloorToInt(xLeft)))
             availablePoints.Add(xLeft);
 
+
+
         print(availablePoints.Count);
         int indexxxx = Random.Range(0, availablePoints.Count);
         print(indexxxx);
         transform.position = availablePoints[indexxxx];
         availablePoints.Clear();
-    }
-
-    private void CheckForReferences()
-    {
-        if (groundMap == null)
-        {
-            groundMap = FindObjectOfType<WalkAbleMap>();
-        }
-
-        if(walkAbleMap == null)
-        {
-            walkAbleMap = groundMap.GetComponent<Tilemap>();
-        }
     }
 
 }
