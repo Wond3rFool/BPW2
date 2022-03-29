@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 public class Pathfinding : MonoBehaviour 
 {
     private Vector3 yUp, yDown, xRight, xLeft;
+    private Vector3Int up, down, right, left;
     private List<Vector3> availablePoints = new List<Vector3>();
 
 
@@ -16,19 +17,26 @@ public class Pathfinding : MonoBehaviour
     public void moveEnemy(Tilemap walkAbleMap) 
     {
 
-        yUp = new Vector3(transform.position.x, transform.position.y + 1, 0);
-        yDown = new Vector3(transform.position.x, transform.position.y - 1, 0);
-        xRight = new Vector3(transform.position.x + 1, transform.position.y, 0);
-        xLeft = new Vector3(transform.position.x - 1, transform.position.y, 0);
+        yUp = transform.position + Vector3.up;
+        yDown = transform.position + Vector3.down;
+        xRight = transform.position + Vector3.right;
+        xLeft = transform.position + Vector3.left;
 
-        if (walkAbleMap.HasTile(Vector3Int.FloorToInt(yUp)))
+        up = walkAbleMap.WorldToCell(yUp);
+        down = walkAbleMap.WorldToCell(yDown);
+        right = walkAbleMap.WorldToCell(xRight);
+        left = walkAbleMap.WorldToCell(xLeft);
+
+
+        if (walkAbleMap.HasTile(up))
             availablePoints.Add(yUp);
-        if (walkAbleMap.HasTile(Vector3Int.FloorToInt(yDown)))
+        if (walkAbleMap.HasTile(down))
             availablePoints.Add(yDown);
-        if (walkAbleMap.HasTile(Vector3Int.FloorToInt(xRight)))
+        if (walkAbleMap.HasTile(right))
             availablePoints.Add(xRight);
-        if (walkAbleMap.HasTile(Vector3Int.FloorToInt(xLeft)))
+        if (walkAbleMap.HasTile(left))
             availablePoints.Add(xLeft);
+
 
 
 

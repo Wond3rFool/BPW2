@@ -270,6 +270,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Grid
       objectReference: {fileID: 0}
+    - target: {fileID: 4182129335831182118, guid: ae86250c1d0ac794899d6f12250e5977, type: 3}
+      propertyPath: m_CellSwizzle
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4182129335831182119, guid: ae86250c1d0ac794899d6f12250e5977, type: 3}
       propertyPath: m_RootOrder
       value: 2
