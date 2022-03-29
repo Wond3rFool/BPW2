@@ -48,12 +48,12 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.E)) 
         {
-            GameManager.isMenuing = true;
+            //GameManager.isMenuing = true;
             grid.HighlightAction(transform.gameObject);
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
-            GameManager.isMenuing = false;
+           // GameManager.isMenuing = false;
             grid.DeHighlightAction(transform.gameObject);
         }
 
