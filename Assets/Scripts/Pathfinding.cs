@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 public class Pathfinding : MonoBehaviour 
 {
     private Vector3 yUp, yDown, xRight, xLeft;
-    private Vector3Int up, down, right, left;
+    private Vector3Int up, down, right, left, myPos;
     private List<Vector3> availablePoints = new List<Vector3>();
 
 
@@ -22,14 +22,25 @@ public class Pathfinding : MonoBehaviour
         xRight = transform.position + Vector3.right;
         xLeft = transform.position + Vector3.left;
 
+        myPos = walkAbleMap.WorldToCell(transform.position);
+
         up = walkAbleMap.WorldToCell(yUp);
         down = walkAbleMap.WorldToCell(yDown);
         right = walkAbleMap.WorldToCell(xRight);
         left = walkAbleMap.WorldToCell(xLeft);
 
+        if (walkAbleMap.HasTile(myPos)) 
+        {
+            print("WTFFF");
+        
+        }
 
-        if (walkAbleMap.HasTile(up))
+
+        if (walkAbleMap.HasTile(up)) 
+        {
             availablePoints.Add(yUp);
+        }
+            
         if (walkAbleMap.HasTile(down))
             availablePoints.Add(yDown);
         if (walkAbleMap.HasTile(right))

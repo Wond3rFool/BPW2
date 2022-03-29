@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 1; i++)
         {
             random = Random.Range(0, DungeonGenerator.walkAbleTiles.Count);
             Instantiate(obj, DungeonGenerator.walkAbleTiles[random] + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
