@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, movePoint.position) == 0f && GameManager.isMenuing == false) 
+        if (Vector3.Distance(transform.position, movePoint.position) == 0f) 
         {
             if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f && GameManager.isPlayerTurn) 
             {
