@@ -8,13 +8,13 @@ public class GameManager : MonoBehaviour
     public enum BattleState { Start, PlayerAction, EnemyAction }
     public BattleState state;
 
-    public Pathfinding obj;
+    public GameObject enemyObj;
 
-    private Pathfinding pathFind;
+    private EnemyController eController;
     [SerializeField]
     private Tilemap tileMap;
 
-    public List<Pathfinding> enemies;
+    public List<GameObject> enemies;
     public static bool isPlayerTurn;
 
     int random;
@@ -24,18 +24,10 @@ public class GameManager : MonoBehaviour
         state = BattleState.PlayerAction;
         isPlayerTurn = true;
         Cursor.visible = false;
-        enemies = new List<Pathfinding>();
     }
     private void Start()
     {
-        for (int i = 0; i < 1; i++)
-        {
-            random = Random.Range(0, DungeonGenerator.walkAbleTiles.Count);
-            Instantiate(obj, DungeonGenerator.walkAbleTiles[random] + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
-            enemies.Add(obj);
-        }
-
-
+        state = BattleState.Start;
     }
     private void Update()
     {
@@ -43,6 +35,11 @@ public class GameManager : MonoBehaviour
         {
             case BattleState.Start: 
                 {
+                    for (int i = 0; i < 10; i++)
+                    {
+                        random = Random.Range(0, DungeonGenerator.walkAbleTiles.Count);
+                        enemies.Add(Instantiate(enemyObj, DungeonGenerator.walkAbleTiles[random] + new Vector3(0.5f, 0.5f, 0), Quaternion.identity));
+                    }
                     state = BattleState.PlayerAction;
                 }
                 break;
@@ -58,8 +55,8 @@ public class GameManager : MonoBehaviour
                 {
                     for (int i = 0; i < enemies.Count; i++) 
                     {
-                        pathFind = enemies[i].GetComponent<Pathfinding>();
-                        pathFind.moveEnemy(tileMap);
+                        eController = enemies[i].GetComponentInChildren<EnemyController>();
+                        eController.moveEnemy(tileMap);
                     }
                     state = BattleState.PlayerAction;
                     isPlayerTurn = true;

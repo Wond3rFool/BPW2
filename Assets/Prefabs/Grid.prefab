@@ -182,7 +182,7 @@ Grid:
   m_CellSize: {x: 1, y: 1, z: 0}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
-  m_CellSwizzle: 0
+  m_CellSwizzle: 1
 --- !u!114 &4182129335831182120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,7 +344,6 @@ GameObject:
   - component: {fileID: 4182129336967956506}
   - component: {fileID: 4182129336967956508}
   - component: {fileID: 4182129336967956507}
-  - component: {fileID: 5800247750390748695}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -452,18 +451,6 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!114 &5800247750390748695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4182129336967956505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7c4ad83cac14304c8368d79cf082ad4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4182129337498872625
 GameObject:
   m_ObjectHideFlags: 0
