@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         grid = FindObjectOfType<GridController>();
-        inventory = new Inventory();
+        inventory = new Inventory(UseItem);
         uiInventory.SetInventory(inventory);
     }
     // Start is called before the first frame update
@@ -62,6 +62,24 @@ public class PlayerController : MonoBehaviour
             grid.DeHighlightAction(transform.gameObject);
         }
 
+    }
+
+    private void UseItem(Item item) 
+    {
+        switch (item.itemType) 
+        {
+            case Item.ItemType.HealthPotion:
+                //do health stuff here
+                inventory.RemoveItem(new Item { itemType = Item.ItemType.HealthPotion, amount = 1 });
+                print("Healing");
+                GameManager.isPlayerTurn = false;
+                break;
+            case Item.ItemType.ManaPotion:
+                //do mana stuff here
+                inventory.RemoveItem(new Item { itemType = Item.ItemType.ManaPotion, amount = 1 });
+                print("Mana regenerated");
+                break;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

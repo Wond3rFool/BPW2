@@ -7,15 +7,13 @@ public class Inventory
 {
     public event EventHandler OnItemListChanged;
     private List<Item> itemList;
+    private Action<Item> useItemAction;
 
-    public Inventory() 
+    public Inventory(Action<Item> useItemAction) 
     {
+        this.useItemAction = useItemAction;
         itemList = new List<Item>();
-
-        AddItem(new Item { itemType = Item.ItemType.HealthPotion, amount = 1 });
-        AddItem(new Item { itemType = Item.ItemType.ManaPotion, amount = 1 });
-
-        Debug.Log(itemList.Count);
+        //Debug.Log(itemList.Count);
     }
 
     public void AddItem(Item item) 
@@ -53,7 +51,7 @@ public class Inventory
             {
                 if (inventoryItem.itemType == item.itemType)
                 {
-                    inventoryItem.amount -= item.amount;
+                    inventoryItem.amount -= 1;
                     itemInInventory = inventoryItem;
                 }
 
@@ -69,6 +67,11 @@ public class Inventory
         }
         OnItemListChanged?.Invoke(this, EventArgs.Empty);
 
+    }
+
+    public void UseItem(Item item) 
+    {
+        useItemAction(item);     
     }
 
     public List<Item> GetItemList() 
