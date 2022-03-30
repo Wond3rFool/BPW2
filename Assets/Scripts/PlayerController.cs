@@ -10,10 +10,15 @@ public class PlayerController : MonoBehaviour
     public LayerMask stopMovement;
 
     private GridController grid;
+    private Inventory inventory;
+
+    [SerializeField]
+    private UI_Inventory uiInventory;
     private void Awake()
     {
         grid = FindObjectOfType<GridController>();
-        
+        inventory = new Inventory();
+        uiInventory.SetInventory(inventory);
     }
     // Start is called before the first frame update
     void Start()
@@ -58,4 +63,18 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        ItemWorld itemWorld = collision.GetComponent<ItemWorld>();
+
+        if(itemWorld != null) 
+        {
+            print("Touching an item");
+            inventory.AddItem(itemWorld.GetItem());
+            itemWorld.DestroySelf();
+        }
+
+    }
+
 }

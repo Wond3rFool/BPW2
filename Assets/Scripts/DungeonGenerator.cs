@@ -25,8 +25,6 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField]
     private Tilemap wallMap;
     [SerializeField]
-    private GameObject player;
-    [SerializeField]
     private int deviationRate = 10;
     [SerializeField]
     private int roomRate = 15;
@@ -36,12 +34,14 @@ public class DungeonGenerator : MonoBehaviour
     private int maxRoutes = 20;
 
     private int routeCount = 0;
+    private PlayerController player;
 
     public static List<Vector3> walkAbleTiles;
 
     public void Awake()
     {
         walkAbleTiles = new List<Vector3>();
+        player = FindObjectOfType<PlayerController>();
     }
     private void Start()
     {
@@ -50,7 +50,7 @@ public class DungeonGenerator : MonoBehaviour
         int routeLength = 0;
         GenerateSquare(x, y, 1);
         Vector2Int previousPos = new Vector2Int(x, y);
-        Instantiate(player, new Vector3(x, y, 0), Quaternion.identity);
+        player.transform.position =  new Vector3(x, y, 0);
         y += 3;
         GenerateSquare(x, y, 1);
         NewRoute(x, y, routeLength, previousPos);

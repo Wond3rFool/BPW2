@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     private EnemyController eController;
     [SerializeField]
     private Tilemap tileMap;
-
+    private Vector3 offset;
     public List<GameObject> enemies;
     public static bool isPlayerTurn;
 
@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
         state = BattleState.PlayerAction;
         isPlayerTurn = true;
         Cursor.visible = false;
+        offset = new Vector3(0.5f, 0.5f, 0);
     }
     private void Start()
     {
@@ -38,8 +39,16 @@ public class GameManager : MonoBehaviour
                     for (int i = 0; i < 10; i++)
                     {
                         random = Random.Range(0, DungeonGenerator.walkAbleTiles.Count);
-                        enemies.Add(Instantiate(enemyObj, DungeonGenerator.walkAbleTiles[random] + new Vector3(0.5f, 0.5f, 0), Quaternion.identity));
+                        enemies.Add(Instantiate(enemyObj, DungeonGenerator.walkAbleTiles[random] + offset, Quaternion.identity));
                     }
+                    for (int j = 0; j < Random.Range(10, 100); j++) 
+                    {
+                        random = Random.Range(0, DungeonGenerator.walkAbleTiles.Count);
+                        ItemWorld.SpawnItemWorld(DungeonGenerator.walkAbleTiles[random] + offset, new Item { itemType = Item.ItemType.HealthPotion, amount = 1 });
+                        ItemWorld.SpawnItemWorld(DungeonGenerator.walkAbleTiles[random] + offset + Vector3.up, new Item { itemType = Item.ItemType.ManaPotion, amount = 1 });
+                    }
+
+
                     state = BattleState.PlayerAction;
                 }
                 break;
