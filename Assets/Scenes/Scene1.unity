@@ -1111,11 +1111,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f358abaac8b0a34f90ba57503ae3103, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundTile: {fileID: 11400000, guid: ace588fdcf162ad4ca824629ef2340c1, type: 2}
-  pitTile: {fileID: 11400000, guid: a66398fbdca6bf1479000610f9253318, type: 2}
-  topWallTile: {fileID: 11400000, guid: 6ab6e800784236b4bb74902bd3ff9cc4, type: 2}
-  botWallTile: {fileID: 11400000, guid: 1be8f849f8d7fa94086312055b7ba4bf, type: 2}
-  highLightTile: {fileID: 11400000, guid: 4627f0efb56d62840b6304347abe1942, type: 2}
+  groundTile: {fileID: 11400000, guid: a917d3a529b4d7843a11eb7e63791fc9, type: 2}
+  pitTile: {fileID: 11400000, guid: 4890b92cf2b11ba43b49a9fd072ba361, type: 2}
+  topWallTile: {fileID: 11400000, guid: 901a8c5060456894488a46bcd2b5d67c, type: 2}
+  botWallTile: {fileID: 11400000, guid: 423b124658a8fe74e9a5a8c31790b3dc, type: 2}
+  highLightTile: {fileID: 11400000, guid: b7db1f40cdf895a4aa559a9de9422bae, type: 2}
   groundMap: {fileID: 94424694}
   highlightMap: {fileID: 180220907}
   pitMap: {fileID: 1019085050}
@@ -1300,6 +1300,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2127020621
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2127020623}
+  - component: {fileID: 2127020622}
+  m_Layer: 0
+  m_Name: Tilemap Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2127020622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127020621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 745eb0e703cf96745b6ec5b6a76861ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundMap: {fileID: 94424694}
+  highLightMap: {fileID: 180220907}
+  pitMap: {fileID: 1019085050}
+  wallMap: {fileID: 1285150551}
+  lvlIndex: 1
+--- !u!4 &2127020623
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127020621}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 15.309153, y: 15.712199, z: -121.10574}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1441970987265785528
 MonoBehaviour:

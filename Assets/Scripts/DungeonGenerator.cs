@@ -7,15 +7,15 @@ public class DungeonGenerator : MonoBehaviour
 {
 
     [SerializeField]
-    private Tile groundTile;
+    private LevelTile groundTile;
     [SerializeField]
-    private Tile pitTile;
+    private LevelTile pitTile;
     [SerializeField]
-    private Tile topWallTile;
+    private LevelTile topWallTile;
     [SerializeField]
-    private Tile botWallTile;
+    private LevelTile botWallTile;
     [SerializeField]
-    private Tile highLightTile;
+    private LevelTile highLightTile;
     [SerializeField]
     private Tilemap groundMap;
     [SerializeField]
@@ -173,7 +173,7 @@ public class DungeonGenerator : MonoBehaviour
                 Vector3Int tilePos = new Vector3Int(tileX, tileY, 0);
                 Vector3 worldPos = groundMap.CellToWorld(tilePos);
                 walkAbleTiles.Add(worldPos);
-                highlightMap.SetTile(tilePos, groundTile);
+                highlightMap.SetTile(tilePos, highLightTile);
                 groundMap.SetTile(tilePos, groundTile);               
             }
         }
