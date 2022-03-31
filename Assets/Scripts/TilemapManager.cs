@@ -7,7 +7,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class TilemapManager : MonoBehaviour
-{
+{ }
+    /*
     [SerializeField]
     private Tilemap groundMap, highLightMap, pitMap, wallMap;
     [SerializeField]
@@ -94,7 +95,7 @@ public class TilemapManager : MonoBehaviour
 }
 
 
-#if UNITY_EDITOR
+
 public static class ScriptableObjectUtility 
 {
     public static void SaveLevelFile(ScriptableLevel level)
@@ -104,5 +105,4 @@ public static class ScriptableObjectUtility
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
-}
-#endif
+}*/
