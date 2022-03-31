@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public Transform movePoint;
     public LayerMask stopMovement;
 
+    public static bool onStairs;
     private GridController grid;
     private Inventory inventory;
 
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
         grid = FindObjectOfType<GridController>();
         inventory = new Inventory(UseItem);
         uiInventory.SetInventory(inventory);
+        onStairs = false;
     }
     // Start is called before the first frame update
     void Start()
@@ -61,7 +63,22 @@ public class PlayerController : MonoBehaviour
            // GameManager.isMenuing = false;
             grid.DeHighlightAction(transform.gameObject);
         }
-
+        if (onStairs) 
+        {
+            if (Input.GetKeyDown(KeyCode.L)) 
+            {
+                DungeonGenerator generator = FindObjectOfType<DungeonGenerator>();
+                generator.RegenSquares();
+                GameManager.pressedReset = true;
+                onStairs = false;
+            }
+            if (Input.GetKeyDown(KeyCode.Escape)) 
+            {
+                Application.Quit();
+            
+            }
+        
+        }
     }
 
     private void UseItem(Item item) 

@@ -32,6 +32,8 @@ public class DungeonGenerator : MonoBehaviour
     private int maxRouteLength;
     [SerializeField]
     private int maxRoutes = 20;
+    [SerializeField]
+    private GameObject movePoint;
 
     private int routeCount = 0;
     private PlayerController player;
@@ -179,7 +181,7 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
-    private void RemoveSquares() 
+    public void RegenSquares() 
     {
         groundMap.ClearAllTiles();
         highlightMap.ClearAllTiles();
@@ -189,6 +191,8 @@ public class DungeonGenerator : MonoBehaviour
         int x = 0;
         int y = 0;
         int routeLength = 0;
+        player.transform.position = new Vector3(x, y, 0);
+        movePoint.transform.position = player.transform.position + new Vector3(0.5f,0.5f,0);
         GenerateSquare(x, y, 1);
         Vector2Int previousPos = new Vector2Int(x, y);
         y += 3;
