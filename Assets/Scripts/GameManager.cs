@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -14,8 +15,10 @@ public class GameManager : MonoBehaviour
     private GameObject enemyObj;
     [SerializeField]
     private Tilemap tileMap;
-    [SerializeField]
-    private GameObject stairs;
+    private FloorTrigger stairs;
+
+    private List<ItemWorld> items;
+
 
     private EnemyController eController;
     private Vector3 offset;
@@ -27,11 +30,13 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        stairs = FindObjectOfType<FloorTrigger>();
         state = BattleState.PlayerAction;
         isPlayerTurn = true;
         pressedReset = false;
         Cursor.visible = false;
         offset = new Vector3(0.5f, 0.5f, 0);
+        items = new List<ItemWorld>();
     }
     private void Start()
     {
@@ -49,11 +54,21 @@ public class GameManager : MonoBehaviour
                         {
                             Destroy(e);    
                         }
-                        enemies.Clear();
                     }
-                        
-                    
+                    if (items.Count > 0) 
+                    {
+                        var allItemsInScene = FindObjectsOfType<ItemWorld>();
+                        foreach (var i in allItemsInScene) 
+                        {
+                            i.DestroySelf();
+                        }
+                        items.Clear();
+                    }
+                    enemies.Clear();
+
                     random = Random.Range(0, DungeonGenerator.walkAbleTiles.Count);
+                    
+
                     for (int i = 0; i < 10; i++)
                     {
                         random = Random.Range(0, DungeonGenerator.walkAbleTiles.Count);
@@ -62,11 +77,11 @@ public class GameManager : MonoBehaviour
                     for (int j = 0; j < Random.Range(10, 100); j++) 
                     {
                         random = Random.Range(0, DungeonGenerator.walkAbleTiles.Count);
-                        ItemWorld.SpawnItemWorld(DungeonGenerator.walkAbleTiles[random] + offset, new Item { itemType = Item.ItemType.HealthPotion, amount = 1 });
-                        ItemWorld.SpawnItemWorld(DungeonGenerator.walkAbleTiles[random] + offset + Vector3.up, new Item { itemType = Item.ItemType.ManaPotion, amount = 1 });
+                        items.Add(ItemWorld.SpawnItemWorld(DungeonGenerator.walkAbleTiles[random] + offset, new Item { itemType = Item.ItemType.HealthPotion, amount = 1 }));
+                        items.Add(ItemWorld.SpawnItemWorld(DungeonGenerator.walkAbleTiles[random] + offset + Vector3.up, new Item { itemType = Item.ItemType.ManaPotion, amount = 1 }));
                     }
-
-                    Instantiate(stairs, DungeonGenerator.walkAbleTiles[random] + offset, Quaternion.identity);
+                    
+                    stairs.transform.position = DungeonGenerator.walkAbleTiles[random] + offset;
 
                     state = BattleState.PlayerAction;
                 }
