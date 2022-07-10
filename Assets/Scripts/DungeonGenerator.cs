@@ -76,14 +76,14 @@ public class DungeonGenerator : MonoBehaviour
                 TileBase tileAbove = groundMap.GetTile(posAbove);
                 if (tile == null)
                 {
-                    pitMap.SetTile(pos, pitTile);
+                    pitMap.SetTile(pos, pitTile.TileBase);
                     if (tileBelow != null)
                     {
-                        wallMap.SetTile(pos, topWallTile);
+                        wallMap.SetTile(pos, topWallTile.TileBase);
                     }
                     else if (tileAbove != null)
                     {
-                        wallMap.SetTile(pos, botWallTile);
+                        wallMap.SetTile(pos, botWallTile.TileBase);
                     }
                 }
             }
@@ -175,8 +175,8 @@ public class DungeonGenerator : MonoBehaviour
                 Vector3Int tilePos = new Vector3Int(tileX, tileY, 0);
                 Vector3 worldPos = groundMap.CellToWorld(tilePos);
                 walkAbleTiles.Add(worldPos);
-                highlightMap.SetTile(tilePos, highLightTile);
-                groundMap.SetTile(tilePos, groundTile);               
+                highlightMap.SetTile(tilePos, highLightTile.TileBase);
+                groundMap.SetTile(tilePos, groundTile.TileBase);               
             }
         }
     }

@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
         isPlayerTurn = true;
         pressedReset = false;
         PlayerIsDead = false;
-        Cursor.visible = false;
         offset = new Vector3(0.5f, 0.5f, 0);
         itemOffset = new Vector3(0.5f, 0.25f, 0);
         items = new List<ItemWorld>();
@@ -119,7 +118,7 @@ public class GameManager : MonoBehaviour
                             }
                             else
                             {
-                                //yield return new WaitForSeconds(eController.moveTime);
+                                yield return new WaitForSeconds(eController.moveTime);
                                 eController.moveEnemy(tileMap);
                             }
                         }
@@ -130,8 +129,7 @@ public class GameManager : MonoBehaviour
                 case BattleState.End: 
                     {
                         isPlayerTurn = false;
-                        //to the game over screen.
-                        print("Game over");
+                        SceneSwitch.GameOver();
                     }
                     break;
 

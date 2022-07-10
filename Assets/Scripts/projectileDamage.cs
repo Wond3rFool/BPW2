@@ -5,13 +5,13 @@ using UnityEngine;
 public class projectileDamage : MonoBehaviour
 {
     float damageAmount = 100f;
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         EnemyController enemy;
-        if (collision.gameObject.GetComponentInChildren<EnemyController>())
+        if (collision.gameObject.GetComponent<EnemyController>())
         {
             print("Hit enemy");
-            enemy = collision.gameObject.GetComponentInChildren<EnemyController>();
+            enemy = collision.gameObject.GetComponent<EnemyController>();
             enemy.TakeDamage(damageAmount);
         }
 

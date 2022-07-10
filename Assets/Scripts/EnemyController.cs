@@ -13,7 +13,7 @@ public class EnemyController : MovingObject
     private Animator animator;
     private Transform target;
 
-    bool playerInRange;
+    public static bool playerInRange;
     public bool isDead;
 
     protected override void Start()
@@ -100,21 +100,5 @@ public class EnemyController : MovingObject
             }
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        //Debug.Log(collision);
-        if (collision.GetComponent<PlayerController>())
-        {
-            playerInRange = true;
-            Debug.Log("player in range");
-        }
-    }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.GetComponent<PlayerController>())
-        {
-            playerInRange = false;
-        }
-    }
 }

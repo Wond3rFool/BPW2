@@ -8,42 +8,118 @@ using UnityEngine.Tilemaps;
 
 public class TilemapManager : MonoBehaviour
 { 
-    
-    [SerializeField]
-    private Tilemap groundMap, highLightMap, pitMap, wallMap;
-    [SerializeField]
-    private int lvlIndex;
+    Dictionary<string, Tilemap> tilemaps = new Dictionary<string, Tilemap>();
+    Dictionary<TileBase, LevelTile> tileBaseToLevelTile = new Dictionary<TileBase, LevelTile>();
+    Dictionary<string, TileBase> guidToTileBase = new Dictionary<string, TileBase>();
 
+    [SerializeField] Bounds bounds;
+    [SerializeField] string filename = "tilemapData.json";
+
+    private void Start()
+    {
+        InitTileMaps();
+        InitTileReferences();
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.N)) SaveMap();
+        if (Input.GetKeyDown(KeyCode.M)) LoadMap();
+    }
+    private void InitTileReferences() 
+    {
+        LevelTile[] levelTiles = Resources.LoadAll<LevelTile>("Tiles/");
+
+        foreach (LevelTile lTile in levelTiles) 
+        {
+            if (!tileBaseToLevelTile.ContainsKey(lTile.TileBase)) 
+            {
+                tileBaseToLevelTile.Add(lTile.TileBase, lTile);
+                guidToTileBase.Add(lTile.name, lTile.TileBase);
+            }
+        
+        }
+    }
+    private void InitTileMaps() 
+    {
+        Tilemap[] maps = FindObjectsOfType<Tilemap>();
+
+        foreach (var map in maps) 
+        {
+            tilemaps.Add(map.name, map);    
+        
+        }
+    }
 
     public void SaveMap()
     {
-        var newLevel = ScriptableObject.CreateInstance<ScriptableLevel>();
+       List<TilemapData> data = new List<TilemapData>();
 
-        newLevel.levelIndex = lvlIndex;
-        newLevel.name = $"Level {lvlIndex}";
-
-        newLevel.groundTiles = GetTilesFromMap(groundMap).ToList();
-        newLevel.highLightTiles = GetTilesFromMap(highLightMap).ToList();
-        newLevel.pitTiles = GetTilesFromMap(pitMap).ToList();
-        newLevel.wallTiles = GetTilesFromMap(wallMap).ToList();
-
-
-        ScriptableObjectUtility.SaveLevelFile(newLevel);
-
-        IEnumerable<SavedTile> GetTilesFromMap(Tilemap map)
+        foreach (var mapObj in tilemaps) 
         {
-            foreach (var pos in map.cellBounds.allPositionsWithin) 
-            {
-                if (map.HasTile(pos)) 
-                {
-                    var levelTile = map.GetTile<LevelTile>(pos);
+            TilemapData mapData = new TilemapData();
+            mapData.key = mapObj.Key;
 
-                    yield return new SavedTile()
+            BoundsInt boundsForThisMap = mapObj.Value.cellBounds;
+
+            for (int x = boundsForThisMap.xMin; x < boundsForThisMap.xMax; x++)
+            {
+                for (int y = boundsForThisMap.yMin; y < boundsForThisMap.yMax; y++)
+                {
+                    Vector3Int pos = new Vector3Int(x, y, 0);
+                    TileBase tile = mapObj.Value.GetTile(pos);
+
+                    if (tile != null && tileBaseToLevelTile.ContainsKey(tile))
                     {
-                        position = pos,
-                        tile = levelTile
-                    };
-                }         
+                        String guid = tileBaseToLevelTile[tile].name;
+                        TileInfo ti = new TileInfo(pos, guid);
+                        // Add "TileInfo" to "Tiles" List of "TilemapData"
+                        mapData.tiles.Add(ti);
+                    }
+                }
+            }
+
+            data.Add(mapData);
+        }
+
+        FileHandler.SaveToJSON<TilemapData>(data, filename);
+
+
+    }
+
+    public void LoadMap()
+    {
+        List<TilemapData> data = FileHandler.ReadListFromJSON<TilemapData>(filename);
+
+        foreach (var mapData in data)
+        {
+            // if key does NOT exist in dictionary skip it
+            if (!tilemaps.ContainsKey(mapData.key))
+            {
+                Debug.LogError("Found saved data for tilemap called '" + mapData.key + "', but Tilemap does not exist in scene.");
+                continue;
+            }
+
+            // get according map
+            var map = tilemaps[mapData.key];
+
+            // clear map
+            map.ClearAllTiles();
+
+            if (mapData.tiles != null && mapData.tiles.Count > 0)
+            {
+                foreach (var tile in mapData.tiles)
+                {
+
+                    if (guidToTileBase.ContainsKey(tile.guidForBuildable))
+                    {
+                        map.SetTile(tile.position, guidToTileBase[tile.guidForBuildable]);
+                    }
+                    else
+                    {
+                        Debug.LogError("Refernce " + tile.guidForBuildable + " could not be found.");
+                    }
+
+                }
             }
         }
     }
@@ -58,51 +134,25 @@ public class TilemapManager : MonoBehaviour
         }
     
     }
-    public void LoadMap()
-    {
-        var level = Resources.Load<ScriptableLevel>($"Levels/level {lvlIndex}");
-        if (level == null) 
-        {
-            Debug.Log("Level index does not exist");
-            return;
-        }
 
-        ClearMap();
-
-        foreach (var savedTile in level.groundTiles) 
-        {
-            groundMap.SetTile(savedTile.position, savedTile.tile); 
-        }
-        foreach (var savedTile in level.pitTiles)
-        {
-            pitMap.SetTile(savedTile.position, savedTile.tile);           
-        }
-        foreach (var savedTile in level.highLightTiles)
-        {
-            highLightMap.SetTile(savedTile.position, savedTile.tile);
-        }
-        foreach (var savedTile in level.wallTiles)
-        {
-            switch (savedTile.tile.type) 
-            {
-                case TileType.topWall:
-                case TileType.botWall:
-                    wallMap.SetTile(savedTile.position, savedTile.tile);
-                    break;
-            }           
-        }
-    }
+    
 }
-
-
-
-public static class ScriptableObjectUtility 
+[Serializable]
+public class TilemapData
 {
-    public static void SaveLevelFile(ScriptableLevel level)
-    {
-        AssetDatabase.CreateAsset(level, $"Assets/Resources/Levels/{level.name}.asset");
+    public string key;
+    public List<TileInfo> tiles = new List<TileInfo>();
 
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+}
+[Serializable]
+public class TileInfo 
+{
+    public string guidForBuildable;
+    public Vector3Int position;
+
+    public TileInfo(Vector3Int pos, string guid) 
+    {
+        position = pos;
+        guidForBuildable = guid;
     }
 }

@@ -4,6 +4,22 @@ using UnityEngine;
 
 public class CheckForPlayer : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //Debug.Log(collision);
+        if (collision.GetComponent<PlayerController>())
+        {
+            EnemyController.playerInRange = true;
+            Debug.Log("player in range");
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.GetComponent<PlayerController>())
+        {
+            EnemyController.playerInRange = false;
+        }
+    }
 
 }
