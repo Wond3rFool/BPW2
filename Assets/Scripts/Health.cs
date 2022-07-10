@@ -7,8 +7,14 @@ public class Health : MonoBehaviour
     public float health;
     public float value;
 
-    void Update()
+    public void TakeDamage(float amount)
     {
-        
+        health -= amount;
+    }
+
+    public void HealAmount(float amount) 
+    {
+        health += amount;
+        if (health >= 100) health = 100;
     }
 }

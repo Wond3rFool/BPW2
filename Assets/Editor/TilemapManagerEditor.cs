@@ -6,7 +6,7 @@ using UnityEditor;
 [CustomEditor(typeof(TilemapManager))]
 public class TilemapManagerEditor : Editor 
 {
-/*
+
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
@@ -26,7 +26,7 @@ public class TilemapManagerEditor : Editor
             script.LoadMap();
         }
     }
-*/
+
 }
 
 

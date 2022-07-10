@@ -6,9 +6,9 @@ using UnityEngine.Tilemaps;
 public class PlayerController : MonoBehaviour
 {
     private float moveSpeed = 5f;
+    Health health;
     public Transform movePoint;
-    public LayerMask stopMovement;
-
+    public LayerMask blockingLayer;
     public static bool onStairs;
     private GridController grid;
     private Inventory inventory;
@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private UI_Inventory uiInventory;
     private void Awake()
     {
+        health = GetComponent<Health>();
         grid = FindObjectOfType<GridController>();
         inventory = new Inventory(UseItem);
         uiInventory.SetInventory(inventory);
@@ -31,21 +32,22 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (health.health <= 0) GameManager.PlayerIsDead = true;
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, movePoint.position) == 0f) 
+        if (Vector3.Distance(transform.position, movePoint.position) == 0f)
         {
-            if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f && GameManager.isPlayerTurn) 
+            if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f && GameManager.isPlayerTurn)
             {
-                if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f), .2f, stopMovement))
+                if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f), .2f, blockingLayer))
                 {
                     movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f);
                     GameManager.isPlayerTurn = false;
-                }    
+                }
             }
             else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f && GameManager.isPlayerTurn)
             {
-                if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f), .2f, stopMovement))
+                if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f), .2f, blockingLayer))
                 {
                     movePoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f);
                     GameManager.isPlayerTurn = false;
@@ -53,42 +55,49 @@ public class PlayerController : MonoBehaviour
             }
 
         }
-        if (Input.GetKeyDown(KeyCode.E)) 
+
+        if (Input.GetKeyDown(KeyCode.E))
         {
             //GameManager.isMenuing = true;
             grid.HighlightAction(transform.gameObject);
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
-           // GameManager.isMenuing = false;
+            //GameManager.isMenuing = false;
             grid.DeHighlightAction(transform.gameObject);
         }
-        if (onStairs) 
+        if (onStairs)
         {
-            if (Input.GetKeyDown(KeyCode.L)) 
+            if (Input.GetKeyDown(KeyCode.L))
             {
                 DungeonGenerator generator = FindObjectOfType<DungeonGenerator>();
                 generator.RegenSquares();
                 GameManager.pressedReset = true;
                 onStairs = false;
             }
-            if (Input.GetKeyDown(KeyCode.Escape)) 
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Application.Quit();
-            
+
             }
-        
+
         }
     }
-
+    public void TakeDamage(int amount)
+    {
+        health.health -= amount;
+    }
     private void UseItem(Item item) 
     {
+        if (!GameManager.isPlayerTurn) return;
+
         switch (item.itemType) 
         {
             case Item.ItemType.HealthPotion:
-                //do health stuff here
+                if (health.health >= 100) return;
+
                 inventory.RemoveItem(new Item { itemType = Item.ItemType.HealthPotion, amount = 1 });
-                print("Healing");
+                health.health += 20;
                 GameManager.isPlayerTurn = false;
                 break;
             case Item.ItemType.ManaPotion:

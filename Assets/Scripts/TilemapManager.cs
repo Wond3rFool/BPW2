@@ -7,8 +7,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class TilemapManager : MonoBehaviour
-{ }
-    /*
+{ 
+    
     [SerializeField]
     private Tilemap groundMap, highLightMap, pitMap, wallMap;
     [SerializeField]
@@ -105,4 +105,4 @@ public static class ScriptableObjectUtility
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
-}*/
+}
